@@ -1,6 +1,7 @@
 package io.github.lncvrt.alwayskeepnightvision.events;
 
 import io.github.lncvrt.alwayskeepnightvision.AlwaysNightVision;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -14,6 +15,11 @@ public class PlayerRespawnListener implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        plugin.applyNightVision(event.getPlayer());
+        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+            @Override
+            public void run() {
+                plugin.applyNightVision(event.getPlayer());
+            }
+        }, 1L);
     }
 }
