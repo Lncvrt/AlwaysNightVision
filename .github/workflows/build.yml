@@ -1,4 +1,4 @@
-name: Compile
+name: Java CI with Maven and Artifact Upload
 
 on:
   push:
