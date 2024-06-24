@@ -1,6 +1,6 @@
 name: AlwaysNightVision
 version: '${project.version}'
-main: io.github.lncvrt.alwayskeepnightvision.AlwaysNightVision
+main: io.github.lncvrt.alwaysnightvision.AlwaysNightVision
 authors: [Lncvrt]
 description: Keeps night vision potion effect always on
 website: https://lncvrt.github.io

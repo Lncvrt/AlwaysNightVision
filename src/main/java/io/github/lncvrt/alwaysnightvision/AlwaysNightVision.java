@@ -1,8 +1,8 @@
-package io.github.lncvrt.alwayskeepnightvision;
+package io.github.lncvrt.alwaysnightvision;
 
-import io.github.lncvrt.alwayskeepnightvision.events.PlayerQuitListener;
-import io.github.lncvrt.alwayskeepnightvision.events.PlayerRespawnListener;
-import io.github.lncvrt.alwayskeepnightvision.events.PlayerJoinListener;
+import io.github.lncvrt.alwaysnightvision.events.PlayerQuitListener;
+import io.github.lncvrt.alwaysnightvision.events.PlayerRespawnListener;
+import io.github.lncvrt.alwaysnightvision.events.PlayerJoinListener;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
