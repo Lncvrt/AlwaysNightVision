@@ -25,4 +25,4 @@ If you encounter any issues or have questions, please visit the [GitHub Issues](
 - **[SpigotMC](https://www.spigotmc.org/resources/alwaysnightvision.117478/)**
 - **[Modrinth](https://modrinth.com/plugin/anv)**
 - **[Hangar](https://hangar.papermc.io/Lncvrt/AlwaysNightVision)**
-- **[CurseForge](https://legacy.curseforge.com/minecraft/bukkit-plugins/alwaysnightvision)
+- **[CurseForge](https://legacy.curseforge.com/minecraft/bukkit-plugins/alwaysnightvision)**
