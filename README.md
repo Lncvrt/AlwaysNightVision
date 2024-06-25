@@ -18,3 +18,11 @@ A really simple plugin to give a player night vision on join.
 ## Support
 
 If you encounter any issues or have questions, please visit the [GitHub Issues](https://github.com/Lncvrt/AlwaysNightVision/issues) page to report bugs or request features.se open an issue to discuss what you would like to change.
+
+---
+
+# Resources
+- **[SpigotMC](https://www.spigotmc.org/resources/alwaysnightvision.117478/)**
+- **[Modrinth](https://modrinth.com/plugin/anv)**
+- **[Hangar](https://hangar.papermc.io/Lncvrt/AlwaysNightVision)**
+- **[CurseForge](https://legacy.curseforge.com/minecraft/bukkit-plugins/alwaysnightvision)
