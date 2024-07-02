@@ -17,7 +17,7 @@ A really simple plugin to give a player night vision on join.
 
 ## Support
 
-If you encounter any issues or have questions, please visit the [GitHub Issues](https://github.com/Lncvrt/AlwaysNightVision/issues) page to report bugs or request features.se open an issue to discuss what you would like to change.
+If you encounter any issues or have questions, please visit the [GitHub Issues](https://github.com/Lncvrt/AlwaysNightVision/issues) page to report bugs or request features open an issue to discuss what you would like to change.
 
 ---
 
