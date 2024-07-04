@@ -4,6 +4,8 @@ main: io.github.lncvrt.alwaysnightvision.AlwaysNightVision
 authors: [Lncvrt]
 description: Keeps night vision potion effect always on
 website: https://lncvrt.github.io
+softdepend:
+  - PlaceholderAPI
 commands:
   togglenightvision:
     aliases:
