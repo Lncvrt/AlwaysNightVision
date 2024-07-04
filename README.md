@@ -11,7 +11,7 @@ A really simple plugin to give a player night vision on join.
 
 ## Installation
 
-1. Download the plugin from the [Release Downloads](https://github.com/Lncvrt/AlwaysNightVision/releases/latest) page.
+1. Download the latest stable version [here](https://modrinth.com/plugin/anv/version/latest) page.
 2. Place the downloaded `.jar` file into your server's `plugins` folder.
 3. Restart your server to load the plugin.
 
