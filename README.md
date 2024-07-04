@@ -2,11 +2,13 @@
 
 A really simple plugin to give a player night vision on join.
 
-**Versions supported: 1.8.8 - 1.21**
+## Features & Information
+
+When joining the server, a player has the Night Vision effect applied to the player. If the player dies, it will reapply to ensure they still have night vision. Should be working with most servers, but paper is always recommended to use.
 
 ## Installation
 
-1. Download the latest stable version [here]([https://modrinth.com/plugin/anv/version/latest](https://github.com/Lncvrt/AlwaysNightVision/releases/latest)) page.
+1. Download the latest stable version [here](https://github.com/Lncvrt/AlwaysNightVision/releases/latest) page.
 2. Place the downloaded `.jar` file into your server's `plugins` folder.
 3. Restart your server to load the plugin.
 
