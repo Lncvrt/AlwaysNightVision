@@ -5,10 +5,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerQuitListener implements Listener {
+public class PlayerQuit implements Listener {
     private final AlwaysNightVision plugin;
 
-    public PlayerQuitListener(AlwaysNightVision plugin) {
+    public PlayerQuit(AlwaysNightVision plugin) {
         this.plugin = plugin;
     }
 

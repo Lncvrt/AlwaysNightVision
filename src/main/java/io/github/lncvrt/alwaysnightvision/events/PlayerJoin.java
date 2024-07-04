@@ -5,10 +5,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class PlayerJoinListener implements Listener {
+public class PlayerJoin implements Listener {
     private final AlwaysNightVision plugin;
 
-    public PlayerJoinListener(AlwaysNightVision plugin) {
+    public PlayerJoin(AlwaysNightVision plugin) {
         this.plugin = plugin;
     }
 

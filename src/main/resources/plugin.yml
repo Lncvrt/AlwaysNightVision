@@ -4,3 +4,15 @@ main: io.github.lncvrt.alwaysnightvision.AlwaysNightVision
 authors: [Lncvrt]
 description: Keeps night vision potion effect always on
 website: https://lncvrt.github.io
+commands:
+  togglenightvision:
+    aliases:
+      - nightvision
+    description: Toggles night vision
+    usage: /togglenightvision
+  alwaysnightvision:
+    aliases:
+      - anv
+    description: Reloads the plugin
+    permission: alwaysnightvision.reload
+    usage: /alwaysnightvision

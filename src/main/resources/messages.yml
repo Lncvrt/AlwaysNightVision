@@ -1,0 +1,5 @@
+# Enable/Disable messages for /togglenightvision
+enable-message: "&aYou have enabled night vision!"
+disable-message: "&cYou have disabled night vision!"
+# Other messages
+reload-message: "&aAlwaysNightVision has been reloaded successfully!"

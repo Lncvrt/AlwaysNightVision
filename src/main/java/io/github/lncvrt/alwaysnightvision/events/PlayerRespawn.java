@@ -6,20 +6,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-public class PlayerRespawnListener implements Listener {
+public class PlayerRespawn implements Listener {
     private final AlwaysNightVision plugin;
 
-    public PlayerRespawnListener(AlwaysNightVision plugin) {
+    public PlayerRespawn(AlwaysNightVision plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                plugin.applyNightVision(event.getPlayer());
-            }
-        }, 1L);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.applyNightVision(event.getPlayer()), 1L);
     }
 }
