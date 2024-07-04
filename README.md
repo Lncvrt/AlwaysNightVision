@@ -7,7 +7,7 @@ A really simple plugin to give a player night vision on join.
 ## Downloads
 
 - **[Release Downloads](https://github.com/Lncvrt/AlwaysNightVision/releases/latest)**
-- **[Beta Downloads](https://github.com/Lncvrt/AlwaysNightVision/actions/workflows/compile.yml)**
+- **[Beta Downloads](https://github.com/Lncvrt/AlwaysNightVision/actions/workflows/build.yml)**
 
 ## Installation
 
