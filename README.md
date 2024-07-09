@@ -1,4 +1,4 @@
-# Always Keep Night Vision
+# Always Night Vision
 
 A really simple plugin to give a player night vision on join.
 

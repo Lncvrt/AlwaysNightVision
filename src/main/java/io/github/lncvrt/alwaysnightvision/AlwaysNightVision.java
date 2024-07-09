@@ -7,6 +7,8 @@ import io.github.lncvrt.alwaysnightvision.events.PlayerJoin;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -16,19 +18,30 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public final class AlwaysNightVision extends JavaPlugin {
-    private File dataFile;
-    private FileConfiguration dataConfig;
-    private FileConfiguration messagesConfig;
+    public File dataFile;
+    public File messagesFile;
+    public File configFile;
+    public FileConfiguration dataConfig;
+    public FileConfiguration messagesConfig;
+    public FileConfiguration mainConfig;
     public Map<UUID, Boolean> nightVisionStates;
 
     @Override
     public void onEnable() {
-        loadResources();
+        try {
+            loadResources();
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
 
         getServer().getOnlinePlayers().forEach(this::applyNightVision);
 
@@ -50,27 +63,101 @@ public final class AlwaysNightVision extends JavaPlugin {
         }
     }
 
-    public void loadResources() {
-        nightVisionStates = new HashMap<>();
+    public void loadResources() throws IOException, InvalidConfigurationException {
         dataFile = new File(getDataFolder(), "data.yml");
+        configFile = new File(getDataFolder(), "config.yml");
+        messagesFile = new File(getDataFolder(), "messages.yml");
+
+        if (nightVisionStates == null) {
+            nightVisionStates = new HashMap<>();
+        } else {
+            ConfigurationSection section = dataConfig.createSection("nightVisionStates");
+            for (Map.Entry<UUID, Boolean> entry : nightVisionStates.entrySet()) {
+                section.set(entry.getKey().toString(), entry.getValue());
+            }
+
+            dataConfig.save(dataFile);
+        }
+
         if (!dataFile.exists()) {
             dataFile.getParentFile().mkdirs();
-            try {
-                dataFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            dataFile.createNewFile();
         }
-        dataConfig = YamlConfiguration.loadConfiguration(dataFile);
+        dataConfig = new YamlConfiguration();
+        try {
+            dataConfig.load(dataFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
         loadNightVisionStates();
 
-        File messagesFile = new File(getDataFolder(), "messages.yml");
+        if (!configFile.exists()) {
+            saveResource("config.yml", false);
+        }
+        mainConfig = new YamlConfiguration();
+        try {
+            mainConfig.load(configFile);
+            updateYamlFile(configFile, mainConfig);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
         if (!messagesFile.exists()) {
             saveResource("messages.yml", false);
         }
-        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+        messagesConfig = new YamlConfiguration();
+        try {
+            messagesConfig.load(messagesFile);
+            updateYamlFile(messagesFile, messagesConfig);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
 
         getLogger().info("Successfully loaded resources!");
+    }
+
+    private void updateYamlFile(File file, FileConfiguration config) throws IOException {
+        String pluginVersion = getDescription().getVersion();
+
+        String configVersion = config.getString("config-version");
+        if (configVersion == null || !configVersion.equals(pluginVersion)) {
+            YamlConfiguration oldConfig = new YamlConfiguration();
+            try {
+                oldConfig.load(file);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+
+            InputStream defaultConfigStream = getResource(file.getName());
+            YamlConfiguration defaultConfig = new YamlConfiguration();
+            try {
+                defaultConfig.load(new InputStreamReader(defaultConfigStream));
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+
+            for (String key : defaultConfig.getKeys(true)) {
+                if (oldConfig.contains(key)) {
+                    defaultConfig.set(key, oldConfig.get(key));
+                }
+            }
+
+            defaultConfig.set("config-version", pluginVersion);
+            defaultConfig.save(file);
+
+            if (file.getName().equals("config.yml")) {
+                mainConfig = defaultConfig;
+            } else if (file.getName().equals("messages.yml")) {
+                messagesConfig = defaultConfig;
+            }
+
+            if (configVersion == null) {
+                configVersion = "n/a (Legacy)";
+            }
+
+            getLogger().info("Updated " + file.getName() + " from version " + configVersion + " to version " + pluginVersion);
+        }
     }
 
     public void applyNightVision(Player player) {
@@ -109,5 +196,13 @@ public final class AlwaysNightVision extends JavaPlugin {
         }
 
         return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    public boolean getConfigBoolean(String configName) {
+        return mainConfig.getBoolean(configName);
+    }
+
+    public String getConfigString(String configName) {
+        return mainConfig.getString(configName);
     }
 }
