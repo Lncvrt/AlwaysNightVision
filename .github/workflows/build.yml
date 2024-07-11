@@ -40,4 +40,4 @@ jobs:
           name: Java Build Artifacts
           path: |
             target/*.jar
-            !target/*-original.jar
+            !target/original-*.jar
