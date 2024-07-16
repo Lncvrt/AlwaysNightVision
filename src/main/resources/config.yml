@@ -1,5 +1,5 @@
 can-toggle-night-vision: true # Weather to allow the user to execute /togglenightvision
 
-toggle-night-vision-permission: "none" # Set to a dedicated permission like yoursserver.togglenightvision if you want it only available to some people
+toggle-night-vision-permission: 'none' # Set to a dedicated permission like yoursserver.togglenightvision if you want it only available to some people
 
 config-version: ${project.version} # Don't change this

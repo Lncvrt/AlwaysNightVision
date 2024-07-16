@@ -1,10 +1,13 @@
 # Enable/Disable messages for /togglenightvision
-enable-message: "&aYou have enabled night vision!"
-disable-message: "&cYou have disabled night vision!"
+enable-message: '&aYou have enabled night vision!'
+disable-message: '&cYou have disabled night vision!'
 # Other messages
-reload-message: "&aAlwaysNightVision has been reloaded successfully!"
-command-disabled-message: "&cThis command has been disabled!"
-permission-denied-message: "&cYou don't have permission to execute this command! &7({permission} is required)"
-only-player-executable: "&cThis command can only be ran by a player!"
+reload-message: '&aAlwaysNightVision has been reloaded successfully!'
+reload-warn-message: '&4&lWARNING&7: &cYou are about to reset all night vision save data. This action will revert statuses to the last server restart or the last execution of &n/alwaysnightvision save&r&c.&r\n&cRun &n/alwaysnightvision save&r&c before proceeding. To continue anyway, execute &n/alwaysnightvision reload confirm&r&c.'
+save-data-message: '&aNight vision data has been successfully saved!'
+command-disabled-message: '&cThis command has been disabled!'
+permission-denied-message: '&cYou don''t have permission to execute this command!
+  &7({permission} is required)'
+only-player-executable: '&cThis command can only be ran by a player!'
 
 config-version: ${project.version} # Don't change this

@@ -1,13 +1,12 @@
 package io.github.lncvrt.alwaysnightvision;
 
+import com.google.gson.reflect.TypeToken;
 import io.github.lncvrt.alwaysnightvision.commands.ToggleNightVision;
+import io.github.lncvrt.alwaysnightvision.events.PlayerJoin;
 import io.github.lncvrt.alwaysnightvision.events.PlayerQuit;
 import io.github.lncvrt.alwaysnightvision.events.PlayerRespawn;
-import io.github.lncvrt.alwaysnightvision.events.PlayerJoin;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,29 +14,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
 public final class AlwaysNightVision extends JavaPlugin {
     public File dataFile;
     public File messagesFile;
     public File configFile;
-    public FileConfiguration dataConfig;
     public FileConfiguration messagesConfig;
     public FileConfiguration mainConfig;
     public Map<UUID, Boolean> nightVisionStates;
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
     public void onEnable() {
         try {
             loadResources();
-        } catch (IOException | InvalidConfigurationException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
             return;
@@ -57,40 +58,28 @@ public final class AlwaysNightVision extends JavaPlugin {
     public void onDisable() {
         getServer().getOnlinePlayers().forEach(this::applyNightVision);
         try {
-            saveNightVisionStates();
+            saveData();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void loadResources() throws IOException, InvalidConfigurationException {
-        dataFile = new File(getDataFolder(), "data.yml");
+    public void loadResources() throws IOException {
+        dataFile = new File(getDataFolder(), "data.json");
         configFile = new File(getDataFolder(), "config.yml");
         messagesFile = new File(getDataFolder(), "messages.yml");
 
         if (nightVisionStates == null) {
             nightVisionStates = new HashMap<>();
-        } else {
-            ConfigurationSection section = dataConfig.createSection("nightVisionStates");
-            for (Map.Entry<UUID, Boolean> entry : nightVisionStates.entrySet()) {
-                section.set(entry.getKey().toString(), entry.getValue());
-            }
-
-            dataConfig.save(dataFile);
         }
 
         if (!dataFile.exists()) {
             dataFile.getParentFile().mkdirs();
             dataFile.createNewFile();
+            saveData(); // save an empty "statuses" object
+        } else {
+            loadNightVisionStates();
         }
-        dataConfig = new YamlConfiguration();
-        try {
-            dataConfig.load(dataFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-
-        loadNightVisionStates();
 
         if (!configFile.exists()) {
             saveResource("config.yml", false);
@@ -113,6 +102,9 @@ public final class AlwaysNightVision extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+
+        getServer().getOnlinePlayers().forEach(this::removeNightVision);
+        getServer().getOnlinePlayers().forEach(this::applyNightVision);
 
         getLogger().info("Successfully loaded resources!");
     }
@@ -173,16 +165,27 @@ public final class AlwaysNightVision extends JavaPlugin {
     }
 
     private void loadNightVisionStates() {
-        for (String key : dataConfig.getKeys(false)) {
-            nightVisionStates.put(UUID.fromString(key), dataConfig.getBoolean(key));
+        try (FileReader reader = new FileReader(dataFile)) {
+            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+            if (jsonObject != null && jsonObject.has("statuses")) {
+                JsonObject statuses = jsonObject.getAsJsonObject("statuses");
+                nightVisionStates = gson.fromJson(statuses, new TypeToken<Map<UUID, Boolean>>(){}.getType());
+            } else {
+                nightVisionStates = new HashMap<>();
+            }
+            getLogger().info("Loaded night vision states: " + nightVisionStates);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void saveNightVisionStates() throws IOException {
-        for (Map.Entry<UUID, Boolean> entry : nightVisionStates.entrySet()) {
-            dataConfig.set(entry.getKey().toString(), entry.getValue());
+    public void saveData() throws IOException {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("statuses", gson.toJsonTree(nightVisionStates));
+        try (FileWriter writer = new FileWriter(dataFile)) {
+            gson.toJson(jsonObject, writer);
         }
-        dataConfig.save(dataFile);
+        getLogger().info("Saved night vision states: " + nightVisionStates);
     }
 
     public String getMessage(String messageName, Player player) {
@@ -195,7 +198,7 @@ public final class AlwaysNightVision extends JavaPlugin {
             message = PlaceholderAPI.setPlaceholders(player, message);
         }
 
-        return ChatColor.translateAlternateColorCodes('&', message);
+        return translateAlternateColorCodes('&', message.replace("\\n", "\n"));
     }
 
     public boolean getConfigBoolean(String configName) {

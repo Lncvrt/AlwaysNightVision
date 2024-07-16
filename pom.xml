@@ -4,7 +4,7 @@
   <groupId>io.github.lncvrt</groupId>
   <artifactId>AlwaysNightVision</artifactId>
   <name>AlwaysNightVision</name>
-  <version>1.1.1</version>
+  <version>1.2.0</version>
   <description>Keeps night vision potion effect always on</description>
   <url>https://lncvrt.github.io</url>
   <build>
