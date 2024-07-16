@@ -173,7 +173,6 @@ public final class AlwaysNightVision extends JavaPlugin {
             } else {
                 nightVisionStates = new HashMap<>();
             }
-            getLogger().info("Loaded night vision states: " + nightVisionStates);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -185,7 +184,6 @@ public final class AlwaysNightVision extends JavaPlugin {
         try (FileWriter writer = new FileWriter(dataFile)) {
             gson.toJson(jsonObject, writer);
         }
-        getLogger().info("Saved night vision states: " + nightVisionStates);
     }
 
     public String getMessage(String messageName, Player player) {
